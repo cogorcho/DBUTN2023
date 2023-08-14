@@ -1,0 +1,4 @@
+**/csharp/test/bin/*
+**/csharp/test/obj/*
+**/csharp/test2/obj/*
+**/csharp/test2/bin/*
