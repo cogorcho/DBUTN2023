@@ -11,9 +11,6 @@ BEGIN
     DECLARE @VALUES VARCHAR(1024)
     DECLARE @WHERE VARCHAR(1024)
     DECLARE C_COL CURSOR FOR
-    SELECT 
-        UPPER(c.name), 
-        CASE y.name
             WHEN 'VARCHAR' then 'VARCHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
             WHEN 'CHAR' then 'CHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
             ELSE UPPER(y.name)
@@ -23,7 +20,7 @@ BEGIN
         INNER JOIN sys.columns c
 	        ON c.object_id = t.object_id
         INNER JOIN sys.types y
-            ON y.user_type_id = c.user_type_id
+            ON y.user_type_id = TRIMc.user_type_id
         LEFT JOIN sys.index_columns ic
         	on ic.object_id = t.object_id
         	and ic.column_id = c.column_id

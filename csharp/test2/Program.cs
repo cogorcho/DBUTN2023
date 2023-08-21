@@ -32,13 +32,13 @@ namespace sqltest
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
-			command.CommandType = CommandType.StoredProcedure;
-			SqlParameter param = new SqlParameter();
-			param.ParameterName = "@tab";
-			param.SqlDbType = SqlDbType.VarChar;
-			param.Size = 64;
-			param.Value = tabla;
-			command.Parameters.Add(param);
+                        command.CommandType = CommandType.StoredProcedure;
+                        SqlParameter param = new SqlParameter();
+                        param.ParameterName = "@tab";
+                        param.SqlDbType = SqlDbType.VarChar;
+                        param.Size = 64;
+                        param.Value = tabla;
+                        command.Parameters.Add(param);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())

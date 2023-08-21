@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 namespace sqltest
 {
@@ -24,7 +24,7 @@ namespace sqltest
                     
                     connection.Open();       
 
-                    String sql = "Select object_id, name from sys.tables";
+                    String sql = "S_INSTITUCION";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
