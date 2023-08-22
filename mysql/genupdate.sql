@@ -1,8 +1,8 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS geninsert;
+DROP PROCEDURE IF EXISTS genupdate;
 
-CREATE PROCEDURE geninsert(IN tab VARCHAR(128))
+CREATE PROCEDURE genupdate(IN tab VARCHAR(128))
 BEGIN
 	DECLARE colname VARCHAR(512);
 	DECLARE datatype VARCHAR(512);
@@ -30,8 +30,8 @@ BEGIN
 	TRUNCATE TABLE TTAB;
 	
 	INSERT INTO TTAB(fila) VALUES ('DELIMITER //');
-	INSERT INTO TTAB(fila) VALUES (CONCAT('DROP PROCEDURE IF EXISTS I_',UPPER(tab),';'));
-	INSERT INTO TTAB(fila) VALUES (CONCAT('CREATE PROCEDURE I_',UPPER(tab),'('));
+	INSERT INTO TTAB(fila) VALUES (CONCAT('DROP PROCEDURE IF EXISTS U_',UPPER(tab),';'));
+	INSERT INTO TTAB(fila) VALUES (CONCAT('CREATE PROCEDURE U_',UPPER(tab),'('));
 	
 	OPEN c_col;
 	getcol: LOOP
@@ -43,37 +43,50 @@ BEGIN
 
 		IF cnt = 0 THEN
 			IF ispk = 1 THEN
-				SET COLS := CONCAT('(',colname);
-				INSERT INTO TTAB(fila) VALUES (CONCAT(' OUT ', colname, ' ', datatype));
-				SET pkname := colname;
-			ELSE
-				SET COLS := CONCAT('(',colname);
-				INSERT INTO TTAB(fila) VALUES (CONCAT(' IN ', colname, ' ', datatype));
+				SET pkname = colname;
 			END IF;
+			INSERT INTO TTAB(fila) VALUES (CONCAT(' IN P_', colname, ' ', datatype));
 			SET cnt := 1;
 		ELSE
-			IF ispk = 1 THEN
-				SET COLS := CONCAT(COLS, ' ,' , colname);
-				INSERT INTO TTAB(fila) VALUES (CONCAT(',OUT ', colname, ' ', datatype));
-				SET pkname := colname;
-			ELSE
-				SET COLS := CONCAT(COLS, ' ,' , colname);
-				INSERT INTO TTAB(fila) VALUES (CONCAT(',IN ', colname, ' ', datatype));
+			IF ispk != 1 THEN
+				INSERT INTO TTAB(fila) VALUES (CONCAT(',IN P_', colname, ' ', datatype));
 			END IF;
 		END IF;
-	
 	END LOOP getcol;
-
-	SET COLS := CONCAT(COLS,')');
+	INSERT INTO TTAB(fila) VALUES (')');
 	CLOSE c_col;
 
 
-	INSERT INTO TTAB(fila) VALUES (')');
 	INSERT INTO TTAB(fila) VALUES ('BEGIN');
-	INSERT INTO TTAB(fila) VALUES (CONCAT('    INSERT INTO ', tab, ' ', COLS));
-	INSERT INTO TTAB(fila) VALUES ('    VALUES');
-	INSERT INTO TTAB(fila) VALUES (CONCAT('    ',  COLS, ';'));
-	INSERT INTO TTAB(fila) VALUES (CONCAT('    SET ', pkname, ' := last_insert_id();'));
+	INSERT INTO TTAB(fila) VALUES (CONCAT('    UPDATE ', tab, ' SET '));
+
+	SET cnt := 0;
+	SET finished := 0;
+	OPEN c_col;
+	getcol2: LOOP
+		FETCH c_col INTO colname, datatype, ispk;
+		
+
+		IF finished = 1 THEN
+			LEAVE getcol2;
+		END IF;
+
+		IF ispk = 1 THEN
+				SET pkname = colname;
+		ELSE
+			IF ispk != 1 THEN
+				IF cnt = 0 THEN
+					INSERT INTO TTAB(fila) VALUES (CONCAT('    ', colname, ' = IFNULL(P_', colname, ' ,', colname,')'));
+					SET cnt := 1;
+				ELSE
+					INSERT INTO TTAB(fila) VALUES (CONCAT('   ,', colname, ' = IFNULL(P_', colname, ' ,', colname,')'));
+				END IF;
+			END IF;
+		END IF;
+	END LOOP getcol2;
+	CLOSE c_col;
+
+	INSERT INTO TTAB(fila) VALUES (CONCAT('    WHERE ',  pkname, ' = P_', pkname, ';'));
 	INSERT INTO TTAB(fila) VALUES ('END;');
 	INSERT INTO TTAB(fila) VALUES ('//');
 	INSERT INTO TTAB(fila) VALUES ('DELIMITER ;');
@@ -83,3 +96,4 @@ BEGIN
 END;
 //
 DELIMITER ;
+ 

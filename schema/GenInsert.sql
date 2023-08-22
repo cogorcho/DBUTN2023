@@ -11,6 +11,9 @@ BEGIN
     DECLARE @VALUES VARCHAR(1024)
     DECLARE @WHERE VARCHAR(1024)
     DECLARE C_COL CURSOR FOR
+    SELECT 
+        UPPER(c.name), 
+        CASE y.name            
             WHEN 'VARCHAR' then 'VARCHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
             WHEN 'CHAR' then 'CHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
             ELSE UPPER(y.name)
