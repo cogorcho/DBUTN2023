@@ -11,4 +11,3 @@ dotnet add package Microsoft.Data.SqlClient
 docker exec -it sql1 /opt/mssql-tools/bin/sqlcmd -S localhost -U sa
 
 sqlcmd -S TSP01\SQLEXPRESS01 -U UserCreator -P UserCreator -d dbutn -i GenDelete.sql
-
