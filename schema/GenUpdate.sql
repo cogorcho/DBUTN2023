@@ -10,26 +10,24 @@ BEGIN
     DECLARE @SQLTEXT VARCHAR(1024)
     DECLARE @WHERE VARCHAR(1024)
     DECLARE C_COL CURSOR FOR
-    SELECT 
-        UPPER(c.name), 
-        CASE y.name
-            WHEN 'VARCHAR' then 'VARCHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
-            WHEN 'CHAR' then 'CHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
-            ELSE UPPER(y.name)
+    select 
+        c.COLUMN_NAME, 
+        CASE c.DATA_TYPE           
+            WHEN 'VARCHAR' then 'VARCHAR(' + RTRIM(LTRIM(STR(c.CHARACTER_MAXIMUM_LENGTH))) + ')'
+            WHEN 'CHAR' then 'CHAR(' + RTRIM(LTRIM(STR(c.CHARACTER_MAXIMUM_LENGTH))) + ')'
+            ELSE UPPER(c.DATA_TYPE)
         END,
-        i.is_primary_key
-    FROM sys.tables t
-        INNER JOIN sys.columns c
-	        ON c.object_id = t.object_id
-        INNER JOIN sys.types y
-            ON y.user_type_id = c.user_type_id
-        LEFT JOIN sys.index_columns ic
-        	on ic.object_id = t.object_id
-        	and ic.column_id = c.column_id
-        LEFT JOIN sys.indexes i
-        	ON i.object_id = t.object_id
-        	and i.index_id = ic.index_id
-    WHERE t.name = @tab
+        case 
+            when isnull(k.CONSTRAINT_NAME,'NO') = 'NO' then 0
+            else 1
+        end as isPk
+    from information_schema.columns c
+    left join information_schema.key_column_usage k 
+        on k.TABLE_CATALOG  = c.TABLE_CATALOG 
+        and k.TABLE_SCHEMA  = c.TABLE_SCHEMA 
+        and k.TABLE_NAME = c.TABLE_NAME 
+        and k.COLUMN_NAME  = c.COLUMN_NAME 
+    where c.TABLE_NAME  = @tab
 
     DECLARE @COLNAME VARCHAR(128)
     DECLARE @COLTYPE VARCHAR(128)
@@ -76,11 +74,11 @@ BEGIN
         ELSE
             IF @CNT = 0
                 BEGIN
-                    INSERT INTO @SALIDA VALUES ('    ' + @COLNAME + ' = ISNULL(@' + @COLNAME + ', ' + @COLNAME + ')')
+                    INSERT INTO @SALIDA VALUES ('        ' + @COLNAME + ' = ISNULL(@' + @COLNAME + ', ' + @COLNAME + ')')
                     SET @CNT = 1
                 END
             ELSE
-                  INSERT INTO @SALIDA VALUES ('   ,' + @COLNAME + ' = ISNULL(@' + @COLNAME + ', ' + @COLNAME + ')' )
+                  INSERT INTO @SALIDA VALUES ('       ,' + @COLNAME + ' = ISNULL(@' + @COLNAME + ', ' + @COLNAME + ')' )
 
         FETCH C_COL INTO @COLNAME, @COLTYPE, @ISPK
     END

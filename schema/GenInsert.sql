@@ -11,26 +11,24 @@ BEGIN
     DECLARE @VALUES VARCHAR(1024)
     DECLARE @WHERE VARCHAR(1024)
     DECLARE C_COL CURSOR FOR
-    SELECT 
-        UPPER(c.name), 
-        CASE y.name            
-            WHEN 'VARCHAR' then 'VARCHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
-            WHEN 'CHAR' then 'CHAR(' + TRIM(STR(c.MAX_LENGTH)) + ')'
-            ELSE UPPER(y.name)
+    select 
+        c.COLUMN_NAME, 
+        CASE c.DATA_TYPE           
+            WHEN 'VARCHAR' then 'VARCHAR(' + RTRIM(LTRIM(STR(c.CHARACTER_MAXIMUM_LENGTH))) + ')'
+            WHEN 'CHAR' then 'CHAR(' + RTRIM(LTRIM(STR(c.CHARACTER_MAXIMUM_LENGTH))) + ')'
+            ELSE UPPER(c.DATA_TYPE)
         END,
-        i.is_primary_key
-    FROM sys.tables t
-        INNER JOIN sys.columns c
-	        ON c.object_id = t.object_id
-        INNER JOIN sys.types y
-            ON y.user_type_id = TRIMc.user_type_id
-        LEFT JOIN sys.index_columns ic
-        	on ic.object_id = t.object_id
-        	and ic.column_id = c.column_id
-        LEFT JOIN sys.indexes i
-        	ON i.object_id = t.object_id
-        	and i.index_id = ic.index_id
-    WHERE t.name = @tab
+        case 
+            when isnull(k.CONSTRAINT_NAME,'NO') = 'NO' then 0
+            else 1
+        end as isPk
+    from information_schema.columns c
+    left join information_schema.key_column_usage k 
+        on k.TABLE_CATALOG  = c.TABLE_CATALOG 
+        and k.TABLE_SCHEMA  = c.TABLE_SCHEMA 
+        and k.TABLE_NAME = c.TABLE_NAME 
+        and k.COLUMN_NAME  = c.COLUMN_NAME 
+    where c.TABLE_NAME  = @tab
 
     DECLARE @COLNAME VARCHAR(128)
     DECLARE @COLTYPE VARCHAR(128)
@@ -38,7 +36,7 @@ BEGIN
     DECLARE @CNT INTEGER
 
 
-    INSERT INTO @SALIDA VALUES ('IF OBJECT_ID(' + CHAR(39) + 'U_' + @tab + CHAR(39) + ',' + CHAR(39) + 'P' + CHAR(39) + ') IS NOT NULL')
+    INSERT INTO @SALIDA VALUES ('IF OBJECT_ID(' + CHAR(39) + 'I_' + @tab + CHAR(39) + ',' + CHAR(39) + 'P' + CHAR(39) + ') IS NOT NULL')
     INSERT INTO @SALIDA VALUES ('    DROP PROCEDURE I_' + @tab)
     INSERT INTO @SALIDA VALUES ('GO')
     INSERT INTO @SALIDA VALUES ('')
@@ -96,8 +94,8 @@ BEGIN
                 END
             ELSE
                 BEGIN
-                    SET @SQLTEXT = @SQLTEXT + ' ,' + UPPER(@COLNAME)
-                    SET @VALUES =  @VALUES + ' ,@' + UPPER(@COLNAME)
+                    SET @SQLTEXT = @SQLTEXT + ', ' + UPPER(@COLNAME)
+                    SET @VALUES =  @VALUES + ', @' + UPPER(@COLNAME)
                 END
         FETCH C_COL INTO @COLNAME, @COLTYPE, @ISPK
     END
@@ -108,7 +106,8 @@ BEGIN
     INSERT INTO @SALIDA VALUES (@VALUES)
     CLOSE C_COL
     DEALLOCATE C_COL
-    INSERT INTO @SALIDA VALUES ('SET @ID = @@IDENTITY')
+    INSERT INTO @SALIDA VALUES ('')
+    INSERT INTO @SALIDA VALUES ('    SET @ID = @@IDENTITY')
     INSERT INTO @SALIDA VALUES ('  END TRY')
     INSERT INTO @SALIDA VALUES ('  BEGIN CATCH')
     INSERT INTO @SALIDA VALUES ('     EXECUTE GetErrorInfo_sp')
