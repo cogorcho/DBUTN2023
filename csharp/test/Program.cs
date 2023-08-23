@@ -19,12 +19,9 @@ namespace sqltest
          
                 using (SqlConnection connection = new SqlConnection(builder.ConnectionString))
                 {
-                    Console.WriteLine("Stored Procedure data example:");
-                    Console.WriteLine("=========================================\n");
-                    
                     connection.Open();       
 
-                    String sql = "S_INSTITUCION";
+                    String sql = "GenTodo";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -32,7 +29,7 @@ namespace sqltest
                         {
                             while (reader.Read())
                             {
-                                Console.WriteLine("{0} {1}", reader.GetInt32(0), reader.GetString(1));
+                                Console.WriteLine("{0}", reader.GetString(0));
                             }
                         }
                     }                    
@@ -42,8 +39,6 @@ namespace sqltest
             {
                 Console.WriteLine(e.ToString());
             }
-            Console.WriteLine("\nDone. Press enter.");
-            Console.ReadLine(); 
         }
     }
 }
