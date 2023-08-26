@@ -3,3 +3,7 @@
 **/csharp/test2/obj/*
 **/csharp/test2/bin/*
 *.swp
+a.out
+test
+test3
+testsp
