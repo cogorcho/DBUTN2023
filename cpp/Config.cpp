@@ -4,13 +4,29 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <bits/stdc++.h>
+#include <vector>
+
+#define DIR_NOT_EXISTS = 1
 
 using namespace std;
 
-class cfg {
+class KeyVal {
+    public:
+        string key;
+        string value;
+        KeyVal(string pKey, string pValue) [
+            key = pKey;
+            value = pValue;
+        ]
+}
+
+class Config {
     public:
         string key;
         string val;
+        static const string base = "BASEDIR";
+        string basedir;
+        vector<KeyVal> kvs;
 
         void show() {
             cout << "{\"key\": \"" <<  key << "\", \"val\": \"" << val << "\"}";
@@ -19,32 +35,49 @@ class cfg {
         string json() {
             return "{\"key\": \"" + key + "\", \"val\": \"" + val + "\"}";
         }
+
+        Config(const char* basedir) {
+            if (!create_dir(basedir))
+          
+            cargar_config();
+        }
+    
+    private:
+        const static string cfgfilename = "config.dat";
+        fstream cfgfile;
+        void cargar_config() {
+            if (check_dir())
+
+        }
 };
 
-int checkdir(const char* dir) {
+int check_dir(const char* dir) {
     struct stat sb;
-    int retval = 2;
     if (stat(dir, &sb) == 0) {
-        cout << dir << " is Ok" << endl;
-        retval = 0;
+        cout << dir << " OK" << endl;
+        retval = 1;
     }
     else {
-        cout << dir << "is NOT Ok!!!!" << endl;
-        retval = 1;
+        cout << dir << " en Error" << endl;
+        retval = 0;
     }
     return retval;
 } 
 
-int createdir(const char* dir) {
-    if (mkdir(dir, 0755) == -1)
-        cerr << "Error: " << strerror(errno) << endl;
-    else
-        cout << dir << " created" << endl;
-
-    return errno;
+int create_dir(const char* dir) {
+    if (!check_dir(dir)) {
+        if (mkdir(dir, 0755) == -1)
+            cerr << "Error creando " << dir << ": " << strerror(errno) << endl;
+        else
+            cout << dir << " creado" << endl;
+        return errno;
+    }   
+    else {
+        return 0;
+    }
 }
 
-int main() {
+int main(int argc, char **argv) {
     fstream newfile;
 
     newfile.open("config/config.dat", ios::in);

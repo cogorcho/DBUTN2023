@@ -10,7 +10,7 @@ Columna::Columna(sql::ResultSet * rs) {
 }
 
 void Columna::print() {
-    cout << orden << ") " << nombre << ", " << tipo << "(" << tamanio << "),  "
+    cout << orden << ") " << nombre << ", " << tipo << "(" << tamanio << ") = "
         << texto << ", Is PK: " << isPk << endl; 
 }
 

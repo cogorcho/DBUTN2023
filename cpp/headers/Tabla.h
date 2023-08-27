@@ -27,6 +27,8 @@ class Tabla {
         void cargar_columnas(sql::ResultSet *); 
         void genClass();
         void genDelete();
+        void genInsert();
+        void genUpdate();
 };
 
 #endif

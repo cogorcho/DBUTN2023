@@ -32,6 +32,8 @@ int main(void) {
             Tabla t(con, res->getString(1));
             t.genClass();
             t.genDelete();
+            t.genUpdate();
+            t.genInsert();
             tablas.push_back(t);
         }
 

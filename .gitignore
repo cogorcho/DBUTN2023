@@ -8,3 +8,8 @@ test
 test3
 testsp
 *.o
+cpp/classes/*
+cpp/storedprocedures/*
+cpp/headers/*
+cpp/data/*
+cpp/config/*
