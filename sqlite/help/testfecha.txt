@@ -1,0 +1,10 @@
+create table tdate(
+	fini varchar(5) check(strftime('%H:%M',fini) < strftime('%H:%M',ffin)),
+	ffin varchar(5) check(strftime('%H:%M',ffin) > strftime('%H:%M',fini)));
+
+sqlite> insert into tdate(fini,ffin) values ('07:15','12:15');
+sqlite> insert into tdate(fini,ffin) values ('07:15','06:15');
+Error: stepping, CHECK constraint failed: strftime('%H:%M',fini) < strftime('%H:%M',ffin) (19)
+sqlite> insert into tdate(fini,ffin) values ('17:15','12:15');
+Error: stepping, CHECK constraint failed: strftime('%H:%M',fini) < strftime('%H:%M',ffin) (19)
+
