@@ -1,0 +1,13 @@
+Baje el mysql-connector: https://dev.mysql.com/downloads/connector/j/
+./usr/share/doc/mysql-connector-j
+./usr/share/java/mysql-connector-java-8.1.0.jar
+./usr/share/java/mysql-connector-j-8.1.0.jar
+
+C:> SET CLASSPATH=/usr/share/java/mysql-connector-j-8.1.0.jar
+C:> javac Test.java
+C:> java Test.java > procs.sql 2>/dev/null
+mysql -u db2023 -pdb2023
+mysql> use UTN;
+mysql> source procs.sql
+mysql> select routine_name from information_schema.routines where routine_schema = 'UTN';
+

@@ -1,0 +1,1793 @@
+---------------------------------------
+-- TABLA: AULA   ----------------
+---------------------------------------
+IF OBJECT_ID('D_AULA','P') IS NOT NULL
+    DROP PROCEDURE D_AULA
+GO
+CREATE PROCEDURE D_AULA
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM AULA WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_AULA','P') IS NOT NULL
+    DROP PROCEDURE I_AULA
+GO
+
+CREATE PROCEDURE I_AULA
+    @id INT OUTPUT
+   ,@sedeid INT
+   ,@nombre VARCHAR(512)
+   ,@capacidad INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO AULA
+    (SEDEID, NOMBRE, CAPACIDAD)
+    VALUES
+    (@SEDEID, @NOMBRE, @CAPACIDAD)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_AULA','P') IS NOT NULL
+    DROP PROCEDURE U_AULA
+GO
+
+CREATE PROCEDURE U_AULA
+    @id INT
+   ,@sedeid INT
+   ,@nombre VARCHAR(512)
+   ,@capacidad INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE AULA SET
+        sedeid = ISNULL(@sedeid, sedeid)
+       ,nombre = ISNULL(@nombre, nombre)
+       ,capacidad = ISNULL(@capacidad, capacidad)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: DOCENTE   ----------------
+---------------------------------------
+IF OBJECT_ID('D_DOCENTE','P') IS NOT NULL
+    DROP PROCEDURE D_DOCENTE
+GO
+CREATE PROCEDURE D_DOCENTE
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM DOCENTE WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_DOCENTE','P') IS NOT NULL
+    DROP PROCEDURE I_DOCENTE
+GO
+
+CREATE PROCEDURE I_DOCENTE
+    @id INT OUTPUT
+   ,@personaid INT
+   ,@institucionid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO DOCENTE
+    (PERSONAID, INSTITUCIONID, FINGRESO, FEGRESO)
+    VALUES
+    (@PERSONAID, @INSTITUCIONID, @FINGRESO, @FEGRESO)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_DOCENTE','P') IS NOT NULL
+    DROP PROCEDURE U_DOCENTE
+GO
+
+CREATE PROCEDURE U_DOCENTE
+    @id INT
+   ,@personaid INT
+   ,@institucionid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE DOCENTE SET
+        personaid = ISNULL(@personaid, personaid)
+       ,institucionid = ISNULL(@institucionid, institucionid)
+       ,fingreso = ISNULL(@fingreso, fingreso)
+       ,fegreso = ISNULL(@fegreso, fegreso)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: RELACIONPARENTAL   ----------------
+---------------------------------------
+IF OBJECT_ID('D_RELACIONPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE D_RELACIONPARENTAL
+GO
+CREATE PROCEDURE D_RELACIONPARENTAL
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM RELACIONPARENTAL WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_RELACIONPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE I_RELACIONPARENTAL
+GO
+
+CREATE PROCEDURE I_RELACIONPARENTAL
+    @id INT OUTPUT
+   ,@autoridadparentalid INT
+   ,@padreid INT
+   ,@hijoid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO RELACIONPARENTAL
+    (AUTORIDADPARENTALID, PADREID, HIJOID)
+    VALUES
+    (@AUTORIDADPARENTALID, @PADREID, @HIJOID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_RELACIONPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE U_RELACIONPARENTAL
+GO
+
+CREATE PROCEDURE U_RELACIONPARENTAL
+    @id INT
+   ,@autoridadparentalid INT
+   ,@padreid INT
+   ,@hijoid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE RELACIONPARENTAL SET
+        autoridadparentalid = ISNULL(@autoridadparentalid, autoridadparentalid)
+       ,padreid = ISNULL(@padreid, padreid)
+       ,hijoid = ISNULL(@hijoid, hijoid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: RESPONSABLELEGAL   ----------------
+---------------------------------------
+IF OBJECT_ID('D_RESPONSABLELEGAL','P') IS NOT NULL
+    DROP PROCEDURE D_RESPONSABLELEGAL
+GO
+CREATE PROCEDURE D_RESPONSABLELEGAL
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM RESPONSABLELEGAL WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_RESPONSABLELEGAL','P') IS NOT NULL
+    DROP PROCEDURE I_RESPONSABLELEGAL
+GO
+
+CREATE PROCEDURE I_RESPONSABLELEGAL
+    @id INT OUTPUT
+   ,@personaid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO RESPONSABLELEGAL
+    (PERSONAID, FINGRESO, FEGRESO)
+    VALUES
+    (@PERSONAID, @FINGRESO, @FEGRESO)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_RESPONSABLELEGAL','P') IS NOT NULL
+    DROP PROCEDURE U_RESPONSABLELEGAL
+GO
+
+CREATE PROCEDURE U_RESPONSABLELEGAL
+    @id INT
+   ,@personaid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE RESPONSABLELEGAL SET
+        personaid = ISNULL(@personaid, personaid)
+       ,fingreso = ISNULL(@fingreso, fingreso)
+       ,fegreso = ISNULL(@fegreso, fegreso)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: TURNO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_TURNO','P') IS NOT NULL
+    DROP PROCEDURE D_TURNO
+GO
+CREATE PROCEDURE D_TURNO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM TURNO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_TURNO','P') IS NOT NULL
+    DROP PROCEDURE I_TURNO
+GO
+
+CREATE PROCEDURE I_TURNO
+    @id INT OUTPUT
+   ,@institucionorientacionid INT
+   ,@sedeid INT
+   ,@nombre VARCHAR(512)
+   ,@horaentrada TIME
+   ,@horasalida TIME
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO TURNO
+    (INSTITUCIONORIENTACIONID, SEDEID, NOMBRE, HORAENTRADA, HORASALIDA)
+    VALUES
+    (@INSTITUCIONORIENTACIONID, @SEDEID, @NOMBRE, @HORAENTRADA, @HORASALIDA)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_TURNO','P') IS NOT NULL
+    DROP PROCEDURE U_TURNO
+GO
+
+CREATE PROCEDURE U_TURNO
+    @id INT
+   ,@institucionorientacionid INT
+   ,@sedeid INT
+   ,@nombre VARCHAR(512)
+   ,@horaentrada TIME
+   ,@horasalida TIME
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE TURNO SET
+        institucionorientacionid = ISNULL(@institucionorientacionid, institucionorientacionid)
+       ,sedeid = ISNULL(@sedeid, sedeid)
+       ,nombre = ISNULL(@nombre, nombre)
+       ,horaentrada = ISNULL(@horaentrada, horaentrada)
+       ,horasalida = ISNULL(@horasalida, horasalida)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: ALUMNOSCOMISION   ----------------
+---------------------------------------
+IF OBJECT_ID('D_ALUMNOSCOMISION','P') IS NOT NULL
+    DROP PROCEDURE D_ALUMNOSCOMISION
+GO
+CREATE PROCEDURE D_ALUMNOSCOMISION
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM ALUMNOSCOMISION WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_ALUMNOSCOMISION','P') IS NOT NULL
+    DROP PROCEDURE I_ALUMNOSCOMISION
+GO
+
+CREATE PROCEDURE I_ALUMNOSCOMISION
+    @id INT OUTPUT
+   ,@comisionid INT
+   ,@alumnoid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO ALUMNOSCOMISION
+    (COMISIONID, ALUMNOID)
+    VALUES
+    (@COMISIONID, @ALUMNOID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_ALUMNOSCOMISION','P') IS NOT NULL
+    DROP PROCEDURE U_ALUMNOSCOMISION
+GO
+
+CREATE PROCEDURE U_ALUMNOSCOMISION
+    @id INT
+   ,@comisionid INT
+   ,@alumnoid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE ALUMNOSCOMISION SET
+        comisionid = ISNULL(@comisionid, comisionid)
+       ,alumnoid = ISNULL(@alumnoid, alumnoid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: HORASTURNO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_HORASTURNO','P') IS NOT NULL
+    DROP PROCEDURE D_HORASTURNO
+GO
+CREATE PROCEDURE D_HORASTURNO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM HORASTURNO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_HORASTURNO','P') IS NOT NULL
+    DROP PROCEDURE I_HORASTURNO
+GO
+
+CREATE PROCEDURE I_HORASTURNO
+    @id INT OUTPUT
+   ,@turnoid INT
+   ,@horainicio TIME
+   ,@horafin TIME
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO HORASTURNO
+    (TURNOID, HORAINICIO, HORAFIN)
+    VALUES
+    (@TURNOID, @HORAINICIO, @HORAFIN)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_HORASTURNO','P') IS NOT NULL
+    DROP PROCEDURE U_HORASTURNO
+GO
+
+CREATE PROCEDURE U_HORASTURNO
+    @id INT
+   ,@turnoid INT
+   ,@horainicio TIME
+   ,@horafin TIME
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE HORASTURNO SET
+        turnoid = ISNULL(@turnoid, turnoid)
+       ,horainicio = ISNULL(@horainicio, horainicio)
+       ,horafin = ISNULL(@horafin, horafin)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: MATERIASDOCENTE   ----------------
+---------------------------------------
+IF OBJECT_ID('D_MATERIASDOCENTE','P') IS NOT NULL
+    DROP PROCEDURE D_MATERIASDOCENTE
+GO
+CREATE PROCEDURE D_MATERIASDOCENTE
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM MATERIASDOCENTE WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_MATERIASDOCENTE','P') IS NOT NULL
+    DROP PROCEDURE I_MATERIASDOCENTE
+GO
+
+CREATE PROCEDURE I_MATERIASDOCENTE
+    @id INT OUTPUT
+   ,@docenteid INT
+   ,@materiaid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO MATERIASDOCENTE
+    (DOCENTEID, MATERIAID)
+    VALUES
+    (@DOCENTEID, @MATERIAID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_MATERIASDOCENTE','P') IS NOT NULL
+    DROP PROCEDURE U_MATERIASDOCENTE
+GO
+
+CREATE PROCEDURE U_MATERIASDOCENTE
+    @id INT
+   ,@docenteid INT
+   ,@materiaid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE MATERIASDOCENTE SET
+        docenteid = ISNULL(@docenteid, docenteid)
+       ,materiaid = ISNULL(@materiaid, materiaid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: RESPONSABLELEGALALUMNO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_RESPONSABLELEGALALUMNO','P') IS NOT NULL
+    DROP PROCEDURE D_RESPONSABLELEGALALUMNO
+GO
+CREATE PROCEDURE D_RESPONSABLELEGALALUMNO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM RESPONSABLELEGALALUMNO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_RESPONSABLELEGALALUMNO','P') IS NOT NULL
+    DROP PROCEDURE I_RESPONSABLELEGALALUMNO
+GO
+
+CREATE PROCEDURE I_RESPONSABLELEGALALUMNO
+    @id INT OUTPUT
+   ,@ResponsableLegalid INT
+   ,@alumnoid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO RESPONSABLELEGALALUMNO
+    (RESPONSABLELEGALID, ALUMNOID)
+    VALUES
+    (@RESPONSABLELEGALID, @ALUMNOID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_RESPONSABLELEGALALUMNO','P') IS NOT NULL
+    DROP PROCEDURE U_RESPONSABLELEGALALUMNO
+GO
+
+CREATE PROCEDURE U_RESPONSABLELEGALALUMNO
+    @id INT
+   ,@ResponsableLegalid INT
+   ,@alumnoid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE RESPONSABLELEGALALUMNO SET
+        ResponsableLegalid = ISNULL(@ResponsableLegalid, ResponsableLegalid)
+       ,alumnoid = ISNULL(@alumnoid, alumnoid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: CLASE   ----------------
+---------------------------------------
+IF OBJECT_ID('D_CLASE','P') IS NOT NULL
+    DROP PROCEDURE D_CLASE
+GO
+CREATE PROCEDURE D_CLASE
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM CLASE WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_CLASE','P') IS NOT NULL
+    DROP PROCEDURE I_CLASE
+GO
+
+CREATE PROCEDURE I_CLASE
+    @id INT OUTPUT
+   ,@comisionid INT
+   ,@docenteid INT
+   ,@materiaid INT
+   ,@aulaid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO CLASE
+    (COMISIONID, DOCENTEID, MATERIAID, AULAID)
+    VALUES
+    (@COMISIONID, @DOCENTEID, @MATERIAID, @AULAID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_CLASE','P') IS NOT NULL
+    DROP PROCEDURE U_CLASE
+GO
+
+CREATE PROCEDURE U_CLASE
+    @id INT
+   ,@comisionid INT
+   ,@docenteid INT
+   ,@materiaid INT
+   ,@aulaid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE CLASE SET
+        comisionid = ISNULL(@comisionid, comisionid)
+       ,docenteid = ISNULL(@docenteid, docenteid)
+       ,materiaid = ISNULL(@materiaid, materiaid)
+       ,aulaid = ISNULL(@aulaid, aulaid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: AUTORIDADPARENTAL   ----------------
+---------------------------------------
+IF OBJECT_ID('D_AUTORIDADPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE D_AUTORIDADPARENTAL
+GO
+CREATE PROCEDURE D_AUTORIDADPARENTAL
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM AUTORIDADPARENTAL WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_AUTORIDADPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE I_AUTORIDADPARENTAL
+GO
+
+CREATE PROCEDURE I_AUTORIDADPARENTAL
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO AUTORIDADPARENTAL
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_AUTORIDADPARENTAL','P') IS NOT NULL
+    DROP PROCEDURE U_AUTORIDADPARENTAL
+GO
+
+CREATE PROCEDURE U_AUTORIDADPARENTAL
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE AUTORIDADPARENTAL SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: INSTITUCION   ----------------
+---------------------------------------
+IF OBJECT_ID('D_INSTITUCION','P') IS NOT NULL
+    DROP PROCEDURE D_INSTITUCION
+GO
+CREATE PROCEDURE D_INSTITUCION
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM INSTITUCION WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_INSTITUCION','P') IS NOT NULL
+    DROP PROCEDURE I_INSTITUCION
+GO
+
+CREATE PROCEDURE I_INSTITUCION
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+   ,@diegrep VARCHAR(512)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO INSTITUCION
+    (NOMBRE, DIEGREP)
+    VALUES
+    (@NOMBRE, @DIEGREP)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_INSTITUCION','P') IS NOT NULL
+    DROP PROCEDURE U_INSTITUCION
+GO
+
+CREATE PROCEDURE U_INSTITUCION
+    @id INT
+   ,@nombre VARCHAR(1024)
+   ,@diegrep VARCHAR(512)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE INSTITUCION SET
+        nombre = ISNULL(@nombre, nombre)
+       ,diegrep = ISNULL(@diegrep, diegrep)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: MATERIA   ----------------
+---------------------------------------
+IF OBJECT_ID('D_MATERIA','P') IS NOT NULL
+    DROP PROCEDURE D_MATERIA
+GO
+CREATE PROCEDURE D_MATERIA
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM MATERIA WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_MATERIA','P') IS NOT NULL
+    DROP PROCEDURE I_MATERIA
+GO
+
+CREATE PROCEDURE I_MATERIA
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO MATERIA
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_MATERIA','P') IS NOT NULL
+    DROP PROCEDURE U_MATERIA
+GO
+
+CREATE PROCEDURE U_MATERIA
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE MATERIA SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: NIVEL   ----------------
+---------------------------------------
+IF OBJECT_ID('D_NIVEL','P') IS NOT NULL
+    DROP PROCEDURE D_NIVEL
+GO
+CREATE PROCEDURE D_NIVEL
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM NIVEL WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_NIVEL','P') IS NOT NULL
+    DROP PROCEDURE I_NIVEL
+GO
+
+CREATE PROCEDURE I_NIVEL
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO NIVEL
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_NIVEL','P') IS NOT NULL
+    DROP PROCEDURE U_NIVEL
+GO
+
+CREATE PROCEDURE U_NIVEL
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE NIVEL SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: ORIENTACION   ----------------
+---------------------------------------
+IF OBJECT_ID('D_ORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE D_ORIENTACION
+GO
+CREATE PROCEDURE D_ORIENTACION
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM ORIENTACION WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_ORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE I_ORIENTACION
+GO
+
+CREATE PROCEDURE I_ORIENTACION
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO ORIENTACION
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_ORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE U_ORIENTACION
+GO
+
+CREATE PROCEDURE U_ORIENTACION
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE ORIENTACION SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: PAIS   ----------------
+---------------------------------------
+IF OBJECT_ID('D_PAIS','P') IS NOT NULL
+    DROP PROCEDURE D_PAIS
+GO
+CREATE PROCEDURE D_PAIS
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM PAIS WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_PAIS','P') IS NOT NULL
+    DROP PROCEDURE I_PAIS
+GO
+
+CREATE PROCEDURE I_PAIS
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO PAIS
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_PAIS','P') IS NOT NULL
+    DROP PROCEDURE U_PAIS
+GO
+
+CREATE PROCEDURE U_PAIS
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE PAIS SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: TIPODOCUMENTO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_TIPODOCUMENTO','P') IS NOT NULL
+    DROP PROCEDURE D_TIPODOCUMENTO
+GO
+CREATE PROCEDURE D_TIPODOCUMENTO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM TIPODOCUMENTO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_TIPODOCUMENTO','P') IS NOT NULL
+    DROP PROCEDURE I_TIPODOCUMENTO
+GO
+
+CREATE PROCEDURE I_TIPODOCUMENTO
+    @id INT OUTPUT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO TIPODOCUMENTO
+    (NOMBRE)
+    VALUES
+    (@NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_TIPODOCUMENTO','P') IS NOT NULL
+    DROP PROCEDURE U_TIPODOCUMENTO
+GO
+
+CREATE PROCEDURE U_TIPODOCUMENTO
+    @id INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE TIPODOCUMENTO SET
+        nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: INSTITUCIONORIENTACION   ----------------
+---------------------------------------
+IF OBJECT_ID('D_INSTITUCIONORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE D_INSTITUCIONORIENTACION
+GO
+CREATE PROCEDURE D_INSTITUCIONORIENTACION
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM INSTITUCIONORIENTACION WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_INSTITUCIONORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE I_INSTITUCIONORIENTACION
+GO
+
+CREATE PROCEDURE I_INSTITUCIONORIENTACION
+    @id INT OUTPUT
+   ,@institucionid INT
+   ,@orientacionid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO INSTITUCIONORIENTACION
+    (INSTITUCIONID, ORIENTACIONID)
+    VALUES
+    (@INSTITUCIONID, @ORIENTACIONID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_INSTITUCIONORIENTACION','P') IS NOT NULL
+    DROP PROCEDURE U_INSTITUCIONORIENTACION
+GO
+
+CREATE PROCEDURE U_INSTITUCIONORIENTACION
+    @id INT
+   ,@institucionid INT
+   ,@orientacionid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE INSTITUCIONORIENTACION SET
+        institucionid = ISNULL(@institucionid, institucionid)
+       ,orientacionid = ISNULL(@orientacionid, orientacionid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: PROVINCIA   ----------------
+---------------------------------------
+IF OBJECT_ID('D_PROVINCIA','P') IS NOT NULL
+    DROP PROCEDURE D_PROVINCIA
+GO
+CREATE PROCEDURE D_PROVINCIA
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM PROVINCIA WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_PROVINCIA','P') IS NOT NULL
+    DROP PROCEDURE I_PROVINCIA
+GO
+
+CREATE PROCEDURE I_PROVINCIA
+    @id INT OUTPUT
+   ,@paisid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO PROVINCIA
+    (PAISID, NOMBRE)
+    VALUES
+    (@PAISID, @NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_PROVINCIA','P') IS NOT NULL
+    DROP PROCEDURE U_PROVINCIA
+GO
+
+CREATE PROCEDURE U_PROVINCIA
+    @id INT
+   ,@paisid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE PROVINCIA SET
+        paisid = ISNULL(@paisid, paisid)
+       ,nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: LOCALIDAD   ----------------
+---------------------------------------
+IF OBJECT_ID('D_LOCALIDAD','P') IS NOT NULL
+    DROP PROCEDURE D_LOCALIDAD
+GO
+CREATE PROCEDURE D_LOCALIDAD
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM LOCALIDAD WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_LOCALIDAD','P') IS NOT NULL
+    DROP PROCEDURE I_LOCALIDAD
+GO
+
+CREATE PROCEDURE I_LOCALIDAD
+    @id INT OUTPUT
+   ,@provinciaid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO LOCALIDAD
+    (PROVINCIAID, NOMBRE)
+    VALUES
+    (@PROVINCIAID, @NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_LOCALIDAD','P') IS NOT NULL
+    DROP PROCEDURE U_LOCALIDAD
+GO
+
+CREATE PROCEDURE U_LOCALIDAD
+    @id INT
+   ,@provinciaid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE LOCALIDAD SET
+        provinciaid = ISNULL(@provinciaid, provinciaid)
+       ,nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: PLANESTUDIOS   ----------------
+---------------------------------------
+IF OBJECT_ID('D_PLANESTUDIOS','P') IS NOT NULL
+    DROP PROCEDURE D_PLANESTUDIOS
+GO
+CREATE PROCEDURE D_PLANESTUDIOS
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM PLANESTUDIOS WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_PLANESTUDIOS','P') IS NOT NULL
+    DROP PROCEDURE I_PLANESTUDIOS
+GO
+
+CREATE PROCEDURE I_PLANESTUDIOS
+    @id INT OUTPUT
+   ,@InstitucionOrientacionId INT
+   ,@nombre VARCHAR(1024)
+   ,@fechainicio DATE
+   ,@fechafin DATE
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO PLANESTUDIOS
+    (INSTITUCIONORIENTACIONID, NOMBRE, FECHAINICIO, FECHAFIN)
+    VALUES
+    (@INSTITUCIONORIENTACIONID, @NOMBRE, @FECHAINICIO, @FECHAFIN)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_PLANESTUDIOS','P') IS NOT NULL
+    DROP PROCEDURE U_PLANESTUDIOS
+GO
+
+CREATE PROCEDURE U_PLANESTUDIOS
+    @id INT
+   ,@InstitucionOrientacionId INT
+   ,@nombre VARCHAR(1024)
+   ,@fechainicio DATE
+   ,@fechafin DATE
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE PLANESTUDIOS SET
+        InstitucionOrientacionId = ISNULL(@InstitucionOrientacionId, InstitucionOrientacionId)
+       ,nombre = ISNULL(@nombre, nombre)
+       ,fechainicio = ISNULL(@fechainicio, fechainicio)
+       ,fechafin = ISNULL(@fechafin, fechafin)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: CURSO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_CURSO','P') IS NOT NULL
+    DROP PROCEDURE D_CURSO
+GO
+CREATE PROCEDURE D_CURSO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM CURSO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_CURSO','P') IS NOT NULL
+    DROP PROCEDURE I_CURSO
+GO
+
+CREATE PROCEDURE I_CURSO
+    @id INT OUTPUT
+   ,@planestudioid INT
+   ,@nivelid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO CURSO
+    (PLANESTUDIOID, NIVELID, NOMBRE)
+    VALUES
+    (@PLANESTUDIOID, @NIVELID, @NOMBRE)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_CURSO','P') IS NOT NULL
+    DROP PROCEDURE U_CURSO
+GO
+
+CREATE PROCEDURE U_CURSO
+    @id INT
+   ,@planestudioid INT
+   ,@nivelid INT
+   ,@nombre VARCHAR(1024)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE CURSO SET
+        planestudioid = ISNULL(@planestudioid, planestudioid)
+       ,nivelid = ISNULL(@nivelid, nivelid)
+       ,nombre = ISNULL(@nombre, nombre)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: DOMICILIO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_DOMICILIO','P') IS NOT NULL
+    DROP PROCEDURE D_DOMICILIO
+GO
+CREATE PROCEDURE D_DOMICILIO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM DOMICILIO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_DOMICILIO','P') IS NOT NULL
+    DROP PROCEDURE I_DOMICILIO
+GO
+
+CREATE PROCEDURE I_DOMICILIO
+    @id INT OUTPUT
+   ,@localidadid INT
+   ,@direccion VARCHAR(2048)
+   ,@codpos VARCHAR(32)
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO DOMICILIO
+    (LOCALIDADID, DIRECCION, CODPOS)
+    VALUES
+    (@LOCALIDADID, @DIRECCION, @CODPOS)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_DOMICILIO','P') IS NOT NULL
+    DROP PROCEDURE U_DOMICILIO
+GO
+
+CREATE PROCEDURE U_DOMICILIO
+    @id INT
+   ,@localidadid INT
+   ,@direccion VARCHAR(2048)
+   ,@codpos VARCHAR(32)
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE DOMICILIO SET
+        localidadid = ISNULL(@localidadid, localidadid)
+       ,direccion = ISNULL(@direccion, direccion)
+       ,codpos = ISNULL(@codpos, codpos)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: MATERIASPLAN   ----------------
+---------------------------------------
+IF OBJECT_ID('D_MATERIASPLAN','P') IS NOT NULL
+    DROP PROCEDURE D_MATERIASPLAN
+GO
+CREATE PROCEDURE D_MATERIASPLAN
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM MATERIASPLAN WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_MATERIASPLAN','P') IS NOT NULL
+    DROP PROCEDURE I_MATERIASPLAN
+GO
+
+CREATE PROCEDURE I_MATERIASPLAN
+    @id INT OUTPUT
+   ,@planestudiosid INT
+   ,@materiaid INT
+   ,@horassemanales INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO MATERIASPLAN
+    (PLANESTUDIOSID, MATERIAID, HORASSEMANALES)
+    VALUES
+    (@PLANESTUDIOSID, @MATERIAID, @HORASSEMANALES)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_MATERIASPLAN','P') IS NOT NULL
+    DROP PROCEDURE U_MATERIASPLAN
+GO
+
+CREATE PROCEDURE U_MATERIASPLAN
+    @id INT
+   ,@planestudiosid INT
+   ,@materiaid INT
+   ,@horassemanales INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE MATERIASPLAN SET
+        planestudiosid = ISNULL(@planestudiosid, planestudiosid)
+       ,materiaid = ISNULL(@materiaid, materiaid)
+       ,horassemanales = ISNULL(@horassemanales, horassemanales)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: COMISION   ----------------
+---------------------------------------
+IF OBJECT_ID('D_COMISION','P') IS NOT NULL
+    DROP PROCEDURE D_COMISION
+GO
+CREATE PROCEDURE D_COMISION
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM COMISION WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_COMISION','P') IS NOT NULL
+    DROP PROCEDURE I_COMISION
+GO
+
+CREATE PROCEDURE I_COMISION
+    @id INT OUTPUT
+   ,@cursoid INT
+   ,@nombre VARCHAR(1024)
+   ,@periodoanual INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO COMISION
+    (CURSOID, NOMBRE, PERIODOANUAL)
+    VALUES
+    (@CURSOID, @NOMBRE, @PERIODOANUAL)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_COMISION','P') IS NOT NULL
+    DROP PROCEDURE U_COMISION
+GO
+
+CREATE PROCEDURE U_COMISION
+    @id INT
+   ,@cursoid INT
+   ,@nombre VARCHAR(1024)
+   ,@periodoanual INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE COMISION SET
+        cursoid = ISNULL(@cursoid, cursoid)
+       ,nombre = ISNULL(@nombre, nombre)
+       ,periodoanual = ISNULL(@periodoanual, periodoanual)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: PERSONA   ----------------
+---------------------------------------
+IF OBJECT_ID('D_PERSONA','P') IS NOT NULL
+    DROP PROCEDURE D_PERSONA
+GO
+CREATE PROCEDURE D_PERSONA
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM PERSONA WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_PERSONA','P') IS NOT NULL
+    DROP PROCEDURE I_PERSONA
+GO
+
+CREATE PROCEDURE I_PERSONA
+    @id INT OUTPUT
+   ,@nombre VARCHAR(128)
+   ,@apellido VARCHAR(128)
+   ,@tipodocumentoid INT
+   ,@documento VARCHAR(32)
+   ,@fnacto DATETIME
+   ,@genero CHAR(1)
+   ,@domicilioid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO PERSONA
+    (NOMBRE, APELLIDO, TIPODOCUMENTOID, DOCUMENTO, FNACTO, GENERO, DOMICILIOID)
+    VALUES
+    (@NOMBRE, @APELLIDO, @TIPODOCUMENTOID, @DOCUMENTO, @FNACTO, @GENERO, @DOMICILIOID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_PERSONA','P') IS NOT NULL
+    DROP PROCEDURE U_PERSONA
+GO
+
+CREATE PROCEDURE U_PERSONA
+    @id INT
+   ,@nombre VARCHAR(128)
+   ,@apellido VARCHAR(128)
+   ,@tipodocumentoid INT
+   ,@documento VARCHAR(32)
+   ,@fnacto DATETIME
+   ,@genero CHAR(1)
+   ,@domicilioid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE PERSONA SET
+        nombre = ISNULL(@nombre, nombre)
+       ,apellido = ISNULL(@apellido, apellido)
+       ,tipodocumentoid = ISNULL(@tipodocumentoid, tipodocumentoid)
+       ,documento = ISNULL(@documento, documento)
+       ,fnacto = ISNULL(@fnacto, fnacto)
+       ,genero = ISNULL(@genero, genero)
+       ,domicilioid = ISNULL(@domicilioid, domicilioid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: SEDE   ----------------
+---------------------------------------
+IF OBJECT_ID('D_SEDE','P') IS NOT NULL
+    DROP PROCEDURE D_SEDE
+GO
+CREATE PROCEDURE D_SEDE
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM SEDE WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_SEDE','P') IS NOT NULL
+    DROP PROCEDURE I_SEDE
+GO
+
+CREATE PROCEDURE I_SEDE
+    @id INT OUTPUT
+   ,@institucionid INT
+   ,@nombre VARCHAR(1024)
+   ,@domicilioid INT
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO SEDE
+    (INSTITUCIONID, NOMBRE, DOMICILIOID)
+    VALUES
+    (@INSTITUCIONID, @NOMBRE, @DOMICILIOID)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_SEDE','P') IS NOT NULL
+    DROP PROCEDURE U_SEDE
+GO
+
+CREATE PROCEDURE U_SEDE
+    @id INT
+   ,@institucionid INT
+   ,@nombre VARCHAR(1024)
+   ,@domicilioid INT
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE SEDE SET
+        institucionid = ISNULL(@institucionid, institucionid)
+       ,nombre = ISNULL(@nombre, nombre)
+       ,domicilioid = ISNULL(@domicilioid, domicilioid)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+---------------------------------------
+-- TABLA: ALUMNO   ----------------
+---------------------------------------
+IF OBJECT_ID('D_ALUMNO','P') IS NOT NULL
+    DROP PROCEDURE D_ALUMNO
+GO
+CREATE PROCEDURE D_ALUMNO
+@ID INTEGER
+AS
+BEGIN
+  BEGIN TRY
+    DELETE FROM ALUMNO WHERE ID = @ID
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('I_ALUMNO','P') IS NOT NULL
+    DROP PROCEDURE I_ALUMNO
+GO
+
+CREATE PROCEDURE I_ALUMNO
+    @id INT OUTPUT
+   ,@institucionid INT
+   ,@personaid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    INSERT INTO ALUMNO
+    (INSTITUCIONID, PERSONAID, FINGRESO, FEGRESO)
+    VALUES
+    (@INSTITUCIONID, @PERSONAID, @FINGRESO, @FEGRESO)
+
+    SET @ID = @@IDENTITY
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
+IF OBJECT_ID('U_ALUMNO','P') IS NOT NULL
+    DROP PROCEDURE U_ALUMNO
+GO
+
+CREATE PROCEDURE U_ALUMNO
+    @id INT
+   ,@institucionid INT
+   ,@personaid INT
+   ,@fingreso DATE
+   ,@fegreso DATE
+AS
+BEGIN
+  BEGIN TRY
+    UPDATE ALUMNO SET
+        institucionid = ISNULL(@institucionid, institucionid)
+       ,personaid = ISNULL(@personaid, personaid)
+       ,fingreso = ISNULL(@fingreso, fingreso)
+       ,fegreso = ISNULL(@fegreso, fegreso)
+    WHERE ID = id
+  END TRY
+  BEGIN CATCH
+     EXECUTE GetErrorInfo_sp
+  END CATCH
+END
+GO
