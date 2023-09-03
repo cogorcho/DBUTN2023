@@ -1,0 +1,1 @@
+SELECT l.name FROM pragma_table_info("Turno") as l WHERE l.pk = 1;
