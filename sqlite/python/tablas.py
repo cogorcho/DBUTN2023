@@ -89,9 +89,15 @@ def cargarTablas():
     return clases
 
 
-for c in cargarTablas():
-    print(c)
-    print("#------------------------------------------")
-    print(f"# Tabla {c.tabla} version json: ")
-    print("#------------------------------------------")
-    print(json.dumps(c.__dict__, indent=4))
+def printer():
+    for c in cargarTablas():
+        print(c)
+
+def printjson():
+    for c in cargarTablas():
+        print("#------------------------------------------")
+        print(f"# Tabla {c.tabla} version json: ")
+        print("#------------------------------------------")
+        print(json.dumps(c.__dict__, indent=4))
+
+printjson()
