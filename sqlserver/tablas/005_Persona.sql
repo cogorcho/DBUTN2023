@@ -16,24 +16,3 @@ create table Persona (
 create index ix_persona_apellido_nombre
 on Persona(apellido,nombre);
 
-DELIMITER //
-CREATE TRIGGER check_insert_fnacto
-BEFORE INSERT ON Persona FOR EACH ROW
-BEGIN
-    IF (NEW.fnacto > CURDATE()) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'la fecha de nacimiento es invalida';
-    END IF;
-END;
-
-
-CREATE TRIGGER check_udate_fnacto
-BEFORE UPDATE ON Persona FOR EACH ROW
-BEGIN
-    IF (NEW.fnacto > CURDATE()) THEN
-        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'la fecha de nacimiento es invalida';
-    END IF;
-END;
-//
-
-DELIMITER ;
-

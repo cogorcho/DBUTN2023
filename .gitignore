@@ -2,6 +2,8 @@
 **/csharp/test/obj/*
 **/csharp/test2/obj/*
 **/csharp/test2/bin/*
+**/csharp/gen/obj/*
+**/csharp/gen/bin/*
 *.swp
 a.out
 test

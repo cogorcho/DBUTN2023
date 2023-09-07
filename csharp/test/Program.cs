@@ -29,10 +29,13 @@ namespace sqltest
                         {
                             while (reader.Read())
                             {
-                                Console.WriteLine("{0}", reader.GetString(0));
+				string sproc = reader.GetString(0);
+                                Console.WriteLine("{0}", sproc);
+				//crearSproc(sproc);
                             }
                         }
                     }                    
+			connection.Close();
                 }
             }
             catch (SqlException e)
@@ -40,5 +43,25 @@ namespace sqltest
                 Console.WriteLine(e.ToString());
             }
         }
+
+	static void crearSproc(string sql) {
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+
+                builder.DataSource = "localhost"; 
+                builder.UserID = "sa";            
+                builder.Password = "Soler225";     
+                builder.Password = "Soler225";     
+                builder.TrustServerCertificate=true;
+                builder.InitialCatalog = "dbutn";
+         
+		Console.WriteLine("Ejecutando...");
+		SqlConnection conn = new SqlConnection(builder.ConnectionString);
+		conn.Open();
+		using (SqlCommand command = new SqlCommand(sql, conn))
+             	{
+			command.ExecuteNonQuery();
+             	}
+		conn.Close();
+	}
     }
 }
