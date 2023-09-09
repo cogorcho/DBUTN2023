@@ -15,3 +15,7 @@ cpp/storedprocedures/*
 cpp/headers/*
 cpp/data/*
 cpp/config/*
+java/dbutn-app
+*.class
+venv/
+__pycache__/

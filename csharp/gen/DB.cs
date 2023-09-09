@@ -6,6 +6,8 @@ using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 
 namespace DBUtn {
@@ -16,11 +18,23 @@ namespace DBUtn {
 		string dbname;
 		List<string> tablas = new List<string>();
 		List<string> tablascreadas = new List<string>();
+		List<string> procedures = new List<string>();
+		List<Parametro> parametros = new List<Parametro>();
 		DatosConexion dataconn;
 		SqlConnection dbConn; 
 		SqlCommand cmd;
 		string[] BaseProcs= {"GenDelete", "GenUpdate", "GenInsert", "GetErrorInfo"};
+		Boolean debug = false;
 
+		private void log(string mensaje) {
+			if (debug)
+				Console.WriteLine(mensaje);
+			else
+				Console.Write(".");
+		}
+		private void logerr(string mensaje) {
+			Console.WriteLine(mensaje);
+		}
 		public DB(string dirsql, string dbname, DatosConexion dataconn) {
 			this.dirtablas = dirsql + "tablas";
 			this.dirprocs = dirsql + "sprocs";
@@ -41,11 +55,11 @@ namespace DBUtn {
 
 				cmd = new SqlCommand("Select getdate()", dbConn);
 				dbConn.Open();
-				Console.WriteLine("Conectado a {0}.", dbConn.Database);
+				log($"Conectado a {dbConn.Database}.");
 			}
 			catch(Exception e) {
-				Console.WriteLine($"Error de conexion a la Base de datos {dataconn.InitialCatalog}");
-				Console.WriteLine(e.Message);
+				logerr($"Error de conexion a la Base de datos {dataconn.InitialCatalog}");
+				logerr(e.Message);
 				return false;
 			}
 			return true;
@@ -59,8 +73,8 @@ namespace DBUtn {
 				tablas.Sort();
 			}
 			catch(Exception e) {
-				Console.WriteLine($"Error cargando tablas desde {dirtablas}");
-				Console.WriteLine(e.Message);
+				logerr($"Error cargando tablas desde {dirtablas}");
+				logerr(e.Message);
 				return false;
 			}
 			return true;
@@ -70,14 +84,14 @@ namespace DBUtn {
 			try {
 				cmd.CommandText = $"DROP DATABASE {dbname}";
 				cmd.ExecuteNonQuery();
-				Console.WriteLine($"DROP DATABASE {dbname} OK");
+				log($"DROP DATABASE {dbname} OK");
 				return true;
 			}
 			catch(SqlException e) {
-				Console.WriteLine($"Error ejecutando {cmd.CommandText}.");
-				Console.WriteLine($"{e.Message} ({e.Number})");
+				logerr($"Error ejecutando {cmd.CommandText}.");
+				logerr($"{e.Message} ({e.Number})");
 				if (e.Number == 3701) {
-					Console.WriteLine("Continuamos");
+					logerr("Continuamos");
 					return true;
 				}
 				return false;
@@ -88,13 +102,13 @@ namespace DBUtn {
 			try {
 				cmd.CommandText = $"CREATE DATABASE {dbname}";
 				cmd.ExecuteNonQuery();
-				Console.WriteLine($"CREATE DATABASE {dbname} OK");
+				log($"CREATE DATABASE {dbname} OK");
 				dbConn.ChangeDatabase(dbname);
 				return true;
 			}
 			catch(Exception e) {
-				Console.WriteLine($"Error ejecutando {cmd.CommandText}.");
-				Console.WriteLine(e.Message);
+				logerr($"Error ejecutando {cmd.CommandText}.");
+				logerr(e.Message);
 				return false;
 			}
 		}
@@ -103,16 +117,16 @@ namespace DBUtn {
 			Boolean Ok = true;
 			foreach(string s in tablas) {
 				string vt = Regex.Replace(s.Split('/').Last().Replace(".sql",""),"00._","");
-				Console.WriteLine($"Creando la tabla {vt}");
+				log($"Creando la tabla {vt}");
 				try {
 					string sql = File.ReadAllText(s);
 					cmd.CommandText = sql.Replace("auto_increment","IDENTITY(1,1)");
 					cmd.ExecuteNonQuery();
-					Console.WriteLine($"Tabla {vt} creada Ok");
+					log($"Tabla {vt} creada Ok");
 				}
 				catch(Exception e) {
-					Console.WriteLine($"Error creando tabla {vt}.");
-					Console.WriteLine(e.Message);
+					logerr($"Error creando tabla {vt}.");
+					logerr(e.Message);
 					Ok = false;
 					break;
 				}
@@ -122,20 +136,20 @@ namespace DBUtn {
 
 		private Boolean listarTablas() {
 			try {
-				Console.WriteLine($"\nLista de Tablas Creadas:");
+				log($"\nLista de Tablas Creadas:");
 				string xsql = "select table_name from information_schema.tables";
 				cmd.CommandText = xsql;
 				SqlDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 	            {
 					tablascreadas.Add(String.Format("{0}",reader[0]));
-	            	Console.WriteLine(String.Format("\t{0}", reader[0]));
+	            	log(String.Format("\t{0}", reader[0]));
 	            }
 				reader.Close();
 	        }
 			catch(Exception e) {
-				Console.WriteLine($"Error listando tablas.");
-				Console.WriteLine(e.Message);
+				logerr($"Error listando tablas.");
+				logerr(e.Message);
 				return false;
 			}
 			return true;
@@ -145,16 +159,16 @@ namespace DBUtn {
 			foreach (string s in BaseProcs) {
 				string sp = $"{dirprocs}/{s}.sql";
 				string vs = Regex.Replace(s.Split('/').Last().Replace(".sql",""),"00._","");
-				Console.WriteLine($"Creando la Stored Procedure {vs}");
+				log($"Creando la Stored Procedure {vs}");
 				try {
 					string sql = File.ReadAllText(sp);
 					cmd.CommandText = sql;
 					cmd.ExecuteNonQuery();
-					Console.WriteLine($"Stored Procedure {vs} creada Ok");
+					log($"Stored Procedure {vs} creada Ok");
 				}
 				catch(Exception e) {
-					Console.WriteLine($"Error creando Stored Procedure {vs}.");
-					Console.WriteLine(e.Message);
+					logerr($"Error creando Stored Procedure {vs}.");
+					logerr(e.Message);
 					return false;
 				}
 			}
@@ -168,7 +182,7 @@ namespace DBUtn {
 					if (s.StartsWith("Gen")) {
 						try {
 							cmd.CommandText = $"{s} @tab={t}";
-							Console.WriteLine($"Ejecutando {s} para {t}");
+							log($"Ejecutando {s} para {t}");
 							SqlDataReader reader = cmd.ExecuteReader();
 							while (reader.Read())
 	            			{
@@ -177,13 +191,13 @@ namespace DBUtn {
 							reader.Close();
 							cmd.CommandText = sb.ToString();
 							cmd.ExecuteNonQuery();
-							Console.WriteLine($"Stored Procedure creada Ok");
+							log($"Stored Procedure creada Ok");
 							sb.Clear();
 						}
 						catch(Exception e) {
-							Console.WriteLine($"Error ejecutando Stored Procedure {s} para la tabla {t}.");
-							Console.WriteLine(e.Message);
-							Console.WriteLine(sb.ToString());
+							logerr($"Error ejecutando Stored Procedure {s} para la tabla {t}.");
+							logerr(e.Message);
+							logerr(sb.ToString());
 							return false;
 						}
 					}
@@ -195,10 +209,68 @@ namespace DBUtn {
 			return true;
 		}
 
+		private Boolean cargarSprocs() {
+			
+			string sql = @"select SPECIFIC_NAME from information_schema.routines 
+					where SUBSTRING(SPECIFIC_NAME,1,1) in ('I','U','D') ";
+			try {
+				cmd.CommandText = sql;
+				SqlDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					procedures.Add(reader[0].ToString());
+				}
+				reader.Close();
+			} catch(Exception e) {
+				logerr($"Error cargando parametros.");
+				logerr(e.Message);
+				return false;				
+			}
+			return true;
+		}
+
+		private Boolean cargarParametros() {
+			string sql = @$"select SPECIFIC_NAME , ORDINAL_POSITION, PARAMETER_NAME , 
+							PARAMETER_MODE , DATA_TYPE , ISNULL(CHARACTER_MAXIMUM_LENGTH,0)
+							from information_schema.parameters
+							where SUBSTRING(SPECIFIC_NAME,1,1) IN ('I','D','U')
+							and SPECIFIC_CATALOG  = '{this.dbname}'
+							and SPECIFIC_SCHEMA  = 'dbo'
+							order by SPECIFIC_NAME , ORDINAL_POSITION ";
+			try {
+				cmd.CommandText = sql;
+				SqlDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					parametros.Add(new Parametro(
+						reader[0].ToString(), reader.GetInt32(1), reader[2].ToString(),
+						reader[3].ToString(), reader[4].ToString(), reader.GetInt32(5))
+					);
+				}
+				reader.Close();
+
+			} catch(Exception e) {
+				logerr($"Error cargando parametros.");
+				logerr(e.Message);
+				return false;				
+			}
+			return true;
+		}
+
+		private void parametrosPorProcedure() {
+			foreach(string s in procedures) {
+				List<Parametro> p  = parametros.FindAll(i => i.Procedure == s);
+				Console.WriteLine($@"Procedure: {s} {p.Count}");
+				foreach(Parametro x in p)
+					Console.WriteLine(JsonSerializer.Serialize(x));
+			}
+		}
 		public void hacerTodo() {
 			if (cargarTablas() && dropDB() && createDB() && crearTablas() 
-				&& listarTablas() && genBaseProcs() && genAPIProcs()) 
+				&& listarTablas() && genBaseProcs() && genAPIProcs() 
+				&& cargarSprocs() && cargarParametros()) 
 			{
+				parametrosPorProcedure();
 				Console.WriteLine("Todo OK");
 			}
 			else {
