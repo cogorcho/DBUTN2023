@@ -53,6 +53,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    for(i = 0; i<argc; i++) {
       Tabla t;
       t.nombre = argv[i];
+      cout << "--- " << argv[i] << endl;
       tablas.push_back(t);
    }
    return 0;
