@@ -115,7 +115,7 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
 
         -- Pais
         DECLARE @id integer
-        EXEC I\_PAIS @id=@id, @nombre='Argentina'
+        EXEC I_PAIS @id=@id, @nombre='Argentina'
 
         --Provincias. EL ID de Pais es 1
         insert into Provincia(paisid, nombre)
@@ -153,7 +153,7 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
         Begin
             open c1
             fetch c1 into @idins
-            while @@fetch\_status = 0
+            while @@fetch_status = 0
                 begin
                     insert into InstitucionOrientacion
                     (institucionid, orientacionid)
@@ -168,7 +168,7 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
         -- Cambios en Domicilio para SQL Server
         -- EL orden del parametro OUTPUT causaba un error.
         -- Lo puse ultimo y funciono OK.
-        CREATE PROCEDURE I\_Domicilio
+        CREATE PROCEDURE I_Domicilio
                 @localidadid INT
                 ,@direccion VARCHAR(2048)
                 ,@codpos VARCHAR(32)
@@ -184,7 +184,7 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
                 SET @ID = @@IDENTITY
             END TRY
             BEGIN CATCH
-                EXECUTE GetErrorInfo\_sp
+                EXECUTE GetErrorInfo_sp
             END CATCH 
             END
 
@@ -197,7 +197,7 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
             where l.nombre = 'SAN NICOLAS DE LOS ARROYOS'
             open c1
             fetch c1 into @idins,@inombre
-            while @@fetch\_status = 0
+            while @@fetch_status = 0
                 begin
                     IF charindex('PRIMARIA',@inombre) > 0 
                     OR charindex('ADULTOS',@inombre) > 0 
@@ -206,25 +206,25 @@ Ejemplo de como generar las Instituciones de San Nicolas con lo que tenemos en l
                     OR charindex('ESPECIAL',@inombre) > 0 
                     OR charindex('SUPERIOR',@inombre) > 0
                     BEGIN
-                        EXEC I\_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
-                        EXEC I\_SEDE @id=@isede,@institucionid=@idins,@nombre='Principal - Unica',@domicilioid=@domid
+                        EXEC I_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
+                        EXEC I_SEDE @id=@isede,@institucionid=@idins,@nombre='Principal - Unica',@domicilioid=@domid
                     END
                     ELSE IF charindex('INFANTES',@inombre) > 0
                     BEGIN
-                        EXEC I\_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
-                        EXEC I\_SEDE @id=@isede,@institucionid=@idins,@nombre='Jardin de Infantes',@domicilioid=@domid
+                        EXEC I_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
+                        EXEC I_SEDE @id=@isede,@institucionid=@idins,@nombre='Jardin de Infantes',@domicilioid=@domid
                     END
                     ELSE
                     BEGIN
                         SET @inombre = 'Primaria - ' + @inombre				
-                        EXEC I\_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
-                        EXEC I\_SEDE @id=@isede,@institucionid=@idins,@nombre='Primaria',@domicilioid=@domid
+                        EXEC I_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
+                        EXEC I_SEDE @id=@isede,@institucionid=@idins,@nombre='Primaria',@domicilioid=@domid
                         SET @inombre = 'Secundaria - ' + @inombre		
-                        EXEC I\_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
-                        EXEC I\_SEDE @id=@isede,@institucionid=@idins,@nombre='Secundaria',@domicilioid=@domid
+                        EXEC I_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
+                        EXEC I_SEDE @id=@isede,@institucionid=@idins,@nombre='Secundaria',@domicilioid=@domid
                         SET @inombre = 'Campo de deportes - ' + @inombre				
-                        EXEC I\_DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
-                        EXEC I\_SEDE @id=@isede,@institucionid=@idins,@nombre='Campo de deportes',@domicilioid=@domid
+                        EXEC I\DOMICILIO  @localidadid=@locid, @direccion=@inombre, @codpos='2900',@Id=@domid OUTPUT
+                        EXEC I_SEDE @id=@isede,@institucionid=@idins,@nombre='Campo de deportes',@domicilioid=@domid
                     END
                     fetch c1 into @idins,@inombre
                 end
