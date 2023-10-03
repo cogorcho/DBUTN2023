@@ -1,0 +1,8 @@
+SELECT * FROM apellidos ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM apellidos ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM apellidos ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM apellidos ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM apellidos ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM nombres ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM nombres where genero = 'Femenino' ORDER BY RANDOM() LIMIT 1;
+SELECT * FROM nombres where genero = 'Femenino' ORDER BY RANDOM() LIMIT 1;

@@ -1,0 +1,14 @@
+mysql: https://www.mysqltutorial.org/mysql-insert-multiple-rows/
+sqlserver: https://www.sqlservertutorial.net/sql-server-basics/sql-server-insert-multiple-rows/
+
+Con esta data en las tablas, hay q armar un stored procedure que genere
+nombres de Personas y relaciones parentales.
+
+Las tablas en las q habria q meter data son:
+	Persona
+	RelacionParental
+
+Quiza podamos hacer un trigger q al terminar de insertar
+una relacion parental, agregar personas como hijos.
+
+
