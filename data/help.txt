@@ -11,4 +11,10 @@ Las tablas en las q habria q meter data son:
 Quiza podamos hacer un trigger q al terminar de insertar
 una relacion parental, agregar personas como hijos.
 
-
+DECLARE @Counter INT 
+SET @Counter=1
+WHILE ( @Counter <= 10)
+BEGIN
+    PRINT 'The counter value is = ' + CONVERT(VARCHAR,@Counter)
+    SET @Counter  = @Counter  + 1
+END
