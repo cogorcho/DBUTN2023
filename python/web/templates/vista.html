@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{ name }}{% endblock %}
+{% block page_content %}
+    <div class="page-header">
+        <h1>{% if name %}{{ name }}{% else %}Escuelas{% endif %}</h1>
+    </div>
+    <table>
+        <tr>
+            {% for c in cols %}
+                <th>{{ c.title() }}</th>
+            {% endfor %}
+        </tr>
+        {% for row in rows %}
+        <tr>
+            {% for col in cols %}
+                <td>{{ row[col] }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %} 
+    </table>
+{% endblock %}

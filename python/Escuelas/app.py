@@ -1,4 +1,5 @@
 from flask import Flask
+import json
 import db
 
 app = Flask(__name__)
@@ -10,7 +11,7 @@ def provincia(id):
 @app.route('/')
 @app.route('/provincias')
 def provincias():
-    return dict(db.provincias())
+    return [dict(row) for row in db.provincias()]
 
 @app.route('/departamento/<id>')
 def departamento(id):
