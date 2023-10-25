@@ -3,7 +3,9 @@ from forms import (BaseEscuelaForm,SectorForm,AmbitoForm,ProvinciaForm,Departame
 from flask_bootstrap import Bootstrap
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'hard to guess string'
+
 bootstrap = Bootstrap(app)
+
 @app.route('/baseescuela', methods=['GET', 'POST'])
 def baseescuela():
     name = 'Baseescuela'

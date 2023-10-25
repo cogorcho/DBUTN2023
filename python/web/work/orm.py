@@ -4,16 +4,29 @@ from flask import Flask
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# ----------------------------------------------
+# Para crear la DB data.sqlite descomentar esto
+# ----------------------------------------------
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+# ----------------------------------------------
+# Para crear la DB mysql/test descomentar esto
+# y cambiar el usuario, la password y el nombre de la DB
+# ----------------------------------------------
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Soler225@localhost/test2'
 
 db = SQLAlchemy(app)
+
 # ---------------------------------------------------
 #   Baseescuela
 # ---------------------------------------------------
 class Baseescuela(db.Model):
     __tablename__ = 'Baseescuela'
 
+    id = db.Column(db.Integer, primary_key=True)
     jurisdiccion = db.Column(db.Text)
     sector = db.Column(db.Text)
     ambito = db.Column(db.Text)
@@ -52,7 +65,6 @@ class Sector(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(128), nullable=False)
-    __table_args__ = (db.UniqueConstraint('nombre', name='uix_Sector'),)
 
     def __repr__(self):
         return f"""

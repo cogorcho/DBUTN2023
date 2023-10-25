@@ -35,6 +35,12 @@ objetos de nuestra base origen **(Escuelas.db)**.
 Para ejecutarlo en otro motor de DB distinto de **sqlite** hay q cambiar la
 cadena de conexión.
 
+Antes de crear la base de datos destino en **mysql o sql server** (basada en Escuelas.db), hay q hacer lo siguiente:
+- Con el entorno virtualizado, cd a work
+- pip install pymsql (para mysql)
+- pip install pyodbc (para sql server)
+- Descomentar las lineas necesarias
+
 ## orm.py
 ```
 import os
@@ -43,8 +49,21 @@ from flask import Flask
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# ----------------------------------------
+# Para sqlite, descomentar estas 2 lineas
+# ----------------------------------------
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# ----------------------------------------
+# Para mysql, descomentar esta linea
+# reemplazando lo que sea necesario.
+# ----------------------------------------
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Soler225@localhost/test'
+
+
+MSSQLengine = sqlalchemy.create_engine('mssql+pyodbc://localhost\\master/Test/?driver=SQL+Server+Native+Client+17.0')
 
 db = SQLAlchemy(app)
 # ---------------------------------------------------
@@ -197,4 +216,35 @@ class Escuela(db.Model):
         """
 
 ```
+
+# Creacion de la DB
+Estando en el directorio **work** ejecutar:
+- En cmd: set FLASK_APP=orm.py, en linux: export FLASK_APP=orm.py
+- flask shell (cambia el prompt)
+```
+python 3.10.12 (main, Jun 11 2023, 05:26:28) [GCC 11.4.0] on linux
+App: orm
+Instance: /home/juan/dev/DBUTN2023/python/web/work/instance
+>>> from orm import db
+>>> db_create_all()
+```
+- Conectados a mysql/la base elegida (en este caso "test") vemos si las tablas se crearon:
+```
+use test
+SELECT * FROM information_schema.tables
+where table_schema = 'test';
+```
+
+```
+table_name  |
+------------+
+Ambito      |
+Baseescuela |
+Departamento|
+Escuela     |
+Localidad   |
+Provincia   |
+Sector      |
+```
+
 
