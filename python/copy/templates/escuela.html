@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block header %}
+<h1 class="display">{{ titulo }}</h1>
+{% endblock%}
+{% block content %}
+<ul>
+{% for k in data %}
+    <li>{{ k }}: {{ data[k] }}</li>
+{% endfor %}
+</ul>
+{% endblock %}

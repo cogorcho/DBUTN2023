@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block header %}
+<h1 class="display">{{ titulo }}</h1>
+{% endblock%}
+{% block content %}
+<table class="table table-striped">
+{% for escuela in data %}
+    <tr><td><a href="/escuela/{{ escuela.id }}">{{ escuela.nombre.title()}}</a></td></tr>
+{% endfor %}
+</table>
+{% endblock %}

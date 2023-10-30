@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block header %}
+<h1 class="display">{{ titulo }}</h1>
+{% endblock%}
+{% block content %}
+<ul>
+{% for k in data %}
+    <li>{{ k.title() }}: {{ data[k] }}</li>
+{% endfor %}
+</ul>
+<form action="{{ action }}" method="post">
+    <input type="submit" class="btn btn-primary mb-3" value="Editar Registro">
+</form>
+{% endblock %}

@@ -1,0 +1,5 @@
+insert into Nivel(nombre) values 
+('EDUCACIÓN INICIAL'),
+('EDUCACIÓN PRIMARIA'),
+('EDUCACIÓN SECUNDARIA'),
+('EDUCACIÓN SUPERIOR');

@@ -1,0 +1,1 @@
+insert into Pais(nombre) values ('Argentina');
